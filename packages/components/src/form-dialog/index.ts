@@ -254,12 +254,19 @@ export function FormDialog(
               onClosed,
               onOpen,
               onOpened,
+              title: isStr(title) ? title : undefined,
             },
             {
               default: () =>
                 h(FormProvider, { form: env.form }, () => h(component, {}, {})),
-              header: () =>
-                h('div', {}, { default: () => resolveComponent(title) }),
+              header: !isStr(title)
+                ? (slotProps) =>
+                    h(
+                      'div',
+                      {},
+                      { default: () => resolveComponent(title, slotProps) }
+                    )
+                : undefined,
               footer: () =>
                 h(
                   'div',
